@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Should I Wear a Jacket?</string>
+    <string name="zip_hint">Enter ZIP Code</string>
+    <string name="city_hint">Enter City Name (Ex. London)</string>
+    <string name="title_activity_results">Should I wear a Jacket?</string>
+</resources>
