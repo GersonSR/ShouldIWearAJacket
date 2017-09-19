@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ShouldIWearAJacketNew.iml" filepath="$PROJECT_DIR$/ShouldIWearAJacketNew.iml" />
       <module fileurl="file://$PROJECT_DIR$/TinyAppProject.iml" filepath="$PROJECT_DIR$/TinyAppProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

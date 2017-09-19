@@ -27,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
             if(zipCodeText != null && !zipCodeText.isEmpty()) {
                 Intent zipCodeIntent = new Intent(MainActivity.this, resultsActivity.class);
+                zipCodeIntent.putExtra("zip", zipCodeText.toString());
                 startActivity(zipCodeIntent);
             }
             else if (cityText != null && !cityText.isEmpty()) {
                 Intent cityIntent = new Intent(MainActivity.this, resultsActivity.class);
+                cityIntent.putExtra("city", cityText.toString());
                 startActivity(cityIntent);
             }
             else {
