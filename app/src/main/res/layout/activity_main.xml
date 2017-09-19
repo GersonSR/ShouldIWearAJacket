@@ -23,8 +23,7 @@
             android:id="@+id/zip_code_search"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/zip_hint"
-            android:inputType="phone" />
+            android:hint="@string/zip_hint" />
 
         <TextView
             android:layout_width="fill_parent"
