@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -21,6 +22,7 @@ public class resultsActivity extends AppCompatActivity {
     TextView txtJson;
     TextView description;
     TextView temperature;
+    ImageView image;
     String zip;
     String city;
     String urlstr;
@@ -32,7 +34,7 @@ public class resultsActivity extends AppCompatActivity {
         txtJson = (TextView) findViewById(R.id.Answer);
         description = (TextView) findViewById(R.id.description);
         temperature = (TextView) findViewById(R.id.temperature);
-
+        image = (ImageView) findViewById(R.id.returnImg);
         new JsonTask().execute();
     }
 
@@ -109,6 +111,7 @@ public class resultsActivity extends AppCompatActivity {
                         txtJson.setText("Yes");
                         description.setText(desc);
                         String degree =  String.format("Current Temp: %d F", temp);
+                        image.setImageResource(R.drawable.yes);
                         temperature.setText(degree);
 
                     }
@@ -116,6 +119,7 @@ public class resultsActivity extends AppCompatActivity {
                         txtJson.setText("No");
                         description.setText(desc);
                         String degree =  String.format("Current Temp: %d F", temp);
+                        image.setImageResource(R.drawable.no);
                         temperature.setText(degree);
 
                     }
