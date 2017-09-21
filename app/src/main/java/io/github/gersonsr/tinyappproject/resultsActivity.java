@@ -1,5 +1,6 @@
 package io.github.gersonsr.tinyappproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +19,20 @@ import java.net.URLConnection;
 public class resultsActivity extends AppCompatActivity {
 
     TextView txtJson;
-    String extra;
+    TextView description;
+    TextView temperature;
+    String zip;
+    String city;
+    String urlstr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         txtJson = (TextView) findViewById(R.id.Answer);
+        description = (TextView) findViewById(R.id.description);
+        temperature = (TextView) findViewById(R.id.temperature);
+
         new JsonTask().execute();
     }
 
@@ -34,21 +42,28 @@ public class resultsActivity extends AppCompatActivity {
         protected JSONObject doInBackground(Void... params)
         {
             try {
-                extra = getIntent().getStringExtra("zip");
+                zip = getIntent().getStringExtra("zip");
             } catch (Exception e) {
 
             }
             try {
-                extra = getIntent().getStringExtra("city");
+                city = getIntent().getStringExtra("city");
             } catch (Exception e) {
 
             }
-            String str =  String.format("http://api.openweathermap.org/data/2.5/weather?q=%s&units=imperial&appid=2eb186d94a8951c1b7506734f3473c0c", extra);
+
+            if(zip != null && !zip.isEmpty()) {
+                urlstr =  String.format("http://api.openweathermap.org/data/2.5/weather?zip=%s&units=imperial&appid=2eb186d94a8951c1b7506734f3473c0c", zip);
+            }
+            else if (city != null && !city.isEmpty()) {
+                urlstr =  String.format("http://api.openweathermap.org/data/2.5/weather?q=%s&units=imperial&appid=2eb186d94a8951c1b7506734f3473c0c", city);
+            }
+
             URLConnection urlConn = null;
             BufferedReader bufferedReader = null;
             try
             {
-                URL url = new URL(str);
+                URL url = new URL(urlstr);
                 urlConn = url.openConnection();
                 bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
 
@@ -86,12 +101,23 @@ public class resultsActivity extends AppCompatActivity {
             {
                 try {
                     Log.e("App", "Success: " + response.getJSONArray("weather").getJSONObject(0).getString("id"));
-                    int result = Integer.parseInt(response.getJSONArray("weather").getJSONObject(0).getString("id"));
-                    if ((result > 199) && (result < 623)){
+                    int id = Integer.parseInt(response.getJSONArray("weather").getJSONObject(0).getString("id"));
+                    String desc = (response.getJSONArray("weather").getJSONObject(0).getString("description"));
+                    int temp = (response.getJSONObject("main").getInt("temp"));
+
+                    if ((id > 199) && (id < 623)){
                         txtJson.setText("Yes");
+                        description.setText(desc);
+                        String degree =  String.format("Current Temp: %d F", temp);
+                        temperature.setText(degree);
+
                     }
                     else {
                         txtJson.setText("No");
+                        description.setText(desc);
+                        String degree =  String.format("Current Temp: %d F", temp);
+                        temperature.setText(degree);
+
                     }
                 } catch (JSONException ex) {
                     Log.e("App", "Failure", ex);
