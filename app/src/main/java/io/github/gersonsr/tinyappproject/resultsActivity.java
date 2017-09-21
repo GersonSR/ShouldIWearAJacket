@@ -114,6 +114,12 @@ public class resultsActivity extends AppCompatActivity {
                         image.setImageResource(R.drawable.yes);
                         temperature.setText(degree);
 
+                    } else if (temp < 72) {
+                        txtJson.setText("Yes");
+                        description.setText(desc);
+                        String degree =  String.format("Current Temp: %d F", temp);
+                        image.setImageResource(R.drawable.yes);
+                        temperature.setText(degree);
                     }
                     else {
                         txtJson.setText("No");
