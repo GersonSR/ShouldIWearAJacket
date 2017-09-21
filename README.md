@@ -16,6 +16,9 @@ Internet Access.
 ## Resources Used:
 Stack Overflow
 Fellow Students
+Image sources:
+https://materialdesignicons.com/
+http://www.iconarchive.com/show/ios7-icons-by-icons8/Clothing-Jacket-icon.html
 
 ## What I Learned:
 I had previous experience with building apps, but mostly used options and resources included with the app. With this app
