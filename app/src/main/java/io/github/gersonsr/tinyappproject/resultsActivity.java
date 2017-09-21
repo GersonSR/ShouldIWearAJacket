@@ -1,115 +1,103 @@
 package io.github.gersonsr.tinyappproject;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import static io.github.gersonsr.tinyappproject.R.id.jsonData;
+import java.net.URLConnection;
 
 public class resultsActivity extends AppCompatActivity {
-    TextView jsonText;
-    ProgressDialog pd;
 
+    TextView txtJson;
+    String extra;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        jsonText = (TextView) findViewById(R.id.jsonData);
-        new JsonTask().execute("http://api.openweathermap.org/data/2.5/weather?q=atlanta&appid=2eb186d94a8951c1b7506734f3473c0c");
+        txtJson = (TextView) findViewById(R.id.Answer);
+        new JsonTask().execute();
     }
 
-
-    private class JsonTask extends AsyncTask<String, String, String> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pd = new ProgressDialog(resultsActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        protected String doInBackground(String... params) {
-
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
+    protected class JsonTask extends AsyncTask<Void, Void, JSONObject>
+    {
+        @Override
+        protected JSONObject doInBackground(Void... params)
+        {
             try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
+                extra = getIntent().getStringExtra("zip");
+            } catch (Exception e) {
 
+            }
+            try {
+                extra = getIntent().getStringExtra("city");
+            } catch (Exception e) {
 
-                InputStream stream = connection.getInputStream();
+            }
+            String str =  String.format("http://api.openweathermap.org/data/2.5/weather?q=%s&units=imperial&appid=2eb186d94a8951c1b7506734f3473c0c", extra);
+            URLConnection urlConn = null;
+            BufferedReader bufferedReader = null;
+            try
+            {
+                URL url = new URL(str);
+                urlConn = url.openConnection();
+                bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
 
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
+                StringBuffer stringBuffer = new StringBuffer();
+                String line;
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    stringBuffer.append(line);
                 }
 
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
+                return new JSONObject(stringBuffer.toString());
+            }
+            catch(Exception ex)
+            {
+                Log.e("App", "yourDataTask", ex);
+                return null;
+            }
+            finally
+            {
+                if(bufferedReader != null)
+                {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
-            return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
+        protected void onPostExecute(JSONObject response)
+        {
+            if(response != null)
+            {
+                try {
+                    Log.e("App", "Success: " + response.getJSONArray("weather").getJSONObject(0).getString("id"));
+                    int result = Integer.parseInt(response.getJSONArray("weather").getJSONObject(0).getString("id"));
+                    if ((result > 199) && (result < 623)){
+                        txtJson.setText("Yes");
+                    }
+                    else {
+                        txtJson.setText("No");
+                    }
+                } catch (JSONException ex) {
+                    Log.e("App", "Failure", ex);
+                    txtJson.setText("Error, my dude.");
+                }
             }
-            jsonText.setText(result);
         }
     }
 }
