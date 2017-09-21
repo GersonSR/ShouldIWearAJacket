@@ -1,5 +1,5 @@
 # ShouldIWearAJacket
-## 0verview:
+## Overview:
 Should I Wear a Jacket is a simple aapp that takes in either your inputed ZIP Code or city name (ZIP Code taking priority),
 and returns a simple answer of weather a yes or a no, giving you a short description of the current weather along with the current 
 temperature.
