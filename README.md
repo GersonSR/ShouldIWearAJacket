@@ -15,11 +15,16 @@ Internet Access.
 
 ## Resources Used:
 Stack Overflow
+
 Fellow Students
+
 Image sources:
+
 https://materialdesignicons.com/
+
 http://www.iconarchive.com/show/ios7-icons-by-icons8/Clothing-Jacket-icon.html
 
+Weather API: https://openweathermap.org/api
 ## What I Learned:
 I had previous experience with building apps, but mostly used options and resources included with the app. With this app
 I needed to learn how to make an JSON call from an URL. I learned how even more fragmented the Android development enviroment is,
